@@ -29,8 +29,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        $user = $request->user();
+
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.users.index');
+        }
+
+        return redirect()->route('tasks.index');
     }
+
 
     /**
      * Destroy an authenticated session.

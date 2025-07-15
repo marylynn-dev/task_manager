@@ -9,10 +9,16 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('role', 'user')->get();
-        return view('admin.users.index', compact('users'));
+        $search = $request->input('search');
+        echo " jjj",
+        $users = User::all();
+
+        echo $users, "jjj";
+        return view('admin.users.index', [
+            'users' => $users,
+        ]);
     }
 
     public function create()
@@ -23,9 +29,9 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
         User::create([
@@ -46,7 +52,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
@@ -55,12 +61,12 @@ class UserController extends Controller
             'email' => $request->email,
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'User updated.');
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'User deleted.');
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }
 }
