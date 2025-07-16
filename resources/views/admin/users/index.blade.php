@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-bold">Manage Usersjjj</h2>
+        <h2 class="text-xl font-bold">Manage Users</h2>
     </x-slot>
 
     <div class="p-4">
